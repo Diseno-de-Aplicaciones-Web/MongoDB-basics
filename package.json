@@ -1,0 +1,26 @@
+{
+  "name": "mongodb-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diseno-de-Aplicaciones-Web/MongoDB-basics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Diseno-de-Aplicaciones-Web/MongoDB-basics/issues"
+  },
+  "homepage": "https://github.com/Diseno-de-Aplicaciones-Web/MongoDB-basics#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongodb": "^4.7.0"
+  }
+}

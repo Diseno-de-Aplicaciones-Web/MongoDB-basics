@@ -21,8 +21,8 @@ app.post("/users/", express.json(), async (request, response)=>{
 })
 
 app.get("/users/", async (request, response)=>{
-    const result = users.find()
-    response.json( await result.toArray() )
+    const cursor = users.find()
+    response.json( await cursor.toArray() )
 })
 
 app.get("/users/by-name/:userName", async (request, response)=>{
@@ -32,11 +32,24 @@ app.get("/users/by-name/:userName", async (request, response)=>{
     response.json( result)
 })
 
+app.get("/users/no-friends/", async (request, response) => {
+    const cursor = users.find(
+        {
+            friends: { $exists: false }
+        }
+    ).sort(
+        {
+            userName: 1
+        }
+    )
+    response.json(await cursor.toArray())
+})
+
 app.get("/users/by-id/:userId", async (request, response)=>{
     const result = await users.findOne({
         _id: ObjectId(request.params.userId)
     })
-    response.json( result)
+    response.json(result)
 })
 
 app.put("/users/:_id", express.json(), async (request, response)=>{

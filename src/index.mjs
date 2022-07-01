@@ -32,6 +32,13 @@ app.get("/users/by-name/:userName", async (request, response)=>{
     response.json( result)
 })
 
+app.get("/users/by-id/:userId", async (request, response)=>{
+    const result = await users.findOne({
+        _id: ObjectId(request.params.userId)
+    })
+    response.json(result)
+})
+
 app.get("/users/no-friends/", async (request, response) => {
     const cursor = users.find(
         {
@@ -45,11 +52,24 @@ app.get("/users/no-friends/", async (request, response) => {
     response.json(await cursor.toArray())
 })
 
-app.get("/users/by-id/:userId", async (request, response)=>{
-    const result = await users.findOne({
-        _id: ObjectId(request.params.userId)
+app.get("/users/by-id-with-friends/:_id", async (request, response) => {
+    const user = await users.findOne({
+        _id: ObjectId(request.params._id),
     })
-    response.json(result)
+    if ( user ) {
+        if (  ! Array.isArray(user.friends) || user.friends.length == 0 ) {
+            user.friends = []
+        } else {
+            const friendsIds = user.friends.map( idString=>ObjectId(idString) )
+            const results = users.find({
+                _id: { $in: friendsIds }
+            })
+            user.friends = await results.toArray()
+        }
+        response.json(user)
+    } else {
+        response.sendStatus(404)
+    }
 })
 
 app.put("/users/:_id", express.json(), async (request, response)=>{
